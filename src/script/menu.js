@@ -21,6 +21,7 @@ function scrollNav(amt) {
 
 function updateArrows() {
     const nw = document.getElementById('navWrapper');
+    if (!nw) return;
     document.getElementById('cL').style.display = nw.scrollLeft > 10 ? 'flex' : 'none';
     document.getElementById('cR').style.display = (nw.scrollWidth - nw.clientWidth - nw.scrollLeft) > 10 ? 'flex' : 'none';
 }
@@ -65,9 +66,9 @@ async function init() {
         const text = await response.text();
         menuData = parseCSV(text);
 
-        const cats = [...new Set(menuData.map(i => i.kategori))];
+        const cats = [...new Set(menuData.map(i => i.kategori).filter(Boolean))];
         const nav = document.getElementById('navWrapper');
-        nav.innerHTML = cats.map(c => `<div class=\"cat-link\" onclick=\"scrollToCategory('${c}', this)\">${c}</div>`).join('');
+        nav.innerHTML = cats.map(c => `<div class="cat-link" onclick="scrollToCategory('${c}', this)">${c}</div>`).join('');
         nav.addEventListener('scroll', updateArrows);
 
         window.addEventListener('resize', updateArrows);
@@ -78,7 +79,6 @@ async function init() {
         console.error("Menü yüklenirken hata oluştu:", error);
     }
 }
-
 
 function render(data, categoryOrder) {
     const container = document.getElementById('menu-container');
@@ -102,15 +102,13 @@ function render(data, categoryOrder) {
             <div class="items-grid">`;
         grouped[cat].forEach(i => {
             html += `<div class="menu-item">
-                <div class="item-details">
-                    <div class="item-header">
-                        <span class="item-name">${i.urun_adi}</span>
-                        <div class="item-price-box">
-                            <span class="current-price">${i.fiyat} TL</span>
-                        </div>
+                <div class="item-header">
+                    <h3 class="item-name">${i.urun_adi}</h3>
+                    <div class="item-price-box">
+                        <span class="current-price">${i.fiyat} TL</span>
                     </div>
-                    ${i.aciklama ? `<p class="item-desc">${i.aciklama}</p>` : ''}
                 </div>
+                ${i.aciklama ? `<p class="item-desc">${i.aciklama}</p>` : ''}
             </div>`;
         });
         html += `</div></div>`;

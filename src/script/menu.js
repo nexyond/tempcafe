@@ -60,30 +60,25 @@ function parseCSV(text) {
 
 async function init() {
     try {
-        const sheetUrl = 'https://docs.google.com/spreadsheets/d/1aAS3GiWnpN4teH5tvucjQI-eYeomPXl4UL4h0lmrbhI/export?format=csv';
-        const response = await fetch(sheetUrl);
-        const csvText = await response.text();
-        menuData = parseCSV(csvText);
+        const sheetId = '1aAS3GiWnpN4teH5tvucjQI-eYeomPXl4UL4h0lmrbhI';
+        const response = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`);
+        const text = await response.text();
+        menuData = parseCSV(text);
 
-        const orderedCats = [];
-        menuData.forEach(item => {
-            if (item.kategori && !orderedCats.includes(item.kategori)) {
-                orderedCats.push(item.kategori);
-            }
-        });
-
+        const cats = [...new Set(menuData.map(i => i.kategori))];
         const nav = document.getElementById('navWrapper');
-        nav.innerHTML = orderedCats.map(c => `<div class=\"cat-link\" onclick=\"scrollToCategory('${c}', this)\">${c}</div>`).join('');
+        nav.innerHTML = cats.map(c => `<div class=\"cat-link\" onclick=\"scrollToCategory('${c}', this)\">${c}</div>`).join('');
         nav.addEventListener('scroll', updateArrows);
+
         window.addEventListener('resize', updateArrows);
         updateArrows();
-
-        render(menuData, orderedCats);
+        render(menuData, cats);
         observeCategories();
     } catch (error) {
-        console.error(error);
+        console.error("Menü yüklenirken hata oluştu:", error);
     }
 }
+
 
 function render(data, categoryOrder) {
     const container = document.getElementById('menu-container');

@@ -65,34 +65,43 @@ async function init() {
         const csvText = await response.text();
         menuData = parseCSV(csvText);
 
-        const cats = [...new Set(menuData.map(i => i.kategori))].filter(c => c);
+        const orderedCats = [];
+        menuData.forEach(item => {
+            if (item.kategori && !orderedCats.includes(item.kategori)) {
+                orderedCats.push(item.kategori);
+            }
+        });
+
         const nav = document.getElementById('navWrapper');
-        nav.innerHTML = cats.map(c => `<div class=\"cat-link\" onclick=\"scrollToCategory('${c}', this)\">${c}</div>`).join('');
+        nav.innerHTML = orderedCats.map(c => `<div class=\"cat-link\" onclick=\"scrollToCategory('${c}', this)\">${c}</div>`).join('');
         nav.addEventListener('scroll', updateArrows);
         window.addEventListener('resize', updateArrows);
         updateArrows();
 
-        render(menuData);
+        render(menuData, orderedCats);
         observeCategories();
     } catch (error) {
         console.error(error);
     }
 }
 
-function render(data) {
+function render(data, categoryOrder) {
     const container = document.getElementById('menu-container');
     if (!data.length) {
         container.innerHTML = '<div class="no-results">Ürün bulunamadı.</div>';
         return;
     }
+    
     const grouped = data.reduce((acc, item) => {
         if (!item.kategori) return acc;
         if (!acc[item.kategori]) acc[item.kategori] = [];
         acc[item.kategori].push(item);
         return acc;
     }, {});
+    
     let html = '';
-    for (let cat in grouped) {
+    categoryOrder.forEach(cat => {
+        if (!grouped[cat]) return;
         html += `<div class="category-section">
             <h2 class="category-title">${cat}</h2>
             <div class="items-grid">`;
@@ -110,14 +119,20 @@ function render(data) {
             </div>`;
         });
         html += `</div></div>`;
-    }
+    });
     container.innerHTML = html;
 }
 
 function search(term) {
     term = term.toLowerCase().trim();
     if (!term) {
-        render(menuData);
+        const orderedCats = [];
+        menuData.forEach(item => {
+            if (item.kategori && !orderedCats.includes(item.kategori)) {
+                orderedCats.push(item.kategori);
+            }
+        });
+        render(menuData, orderedCats);
         return;
     }
     const filtered = menuData.filter(i =>
@@ -125,7 +140,14 @@ function search(term) {
         (i.kategori && i.kategori.toLowerCase().includes(term)) ||
         (i.aciklama && i.aciklama.toLowerCase().includes(term))
     );
-    render(filtered);
+    
+    const orderedCats = [];
+    filtered.forEach(item => {
+        if (item.kategori && !orderedCats.includes(item.kategori)) {
+            orderedCats.push(item.kategori);
+        }
+    });
+    render(filtered, orderedCats);
 }
 
 function scrollToCategory(catName, el) {

@@ -53,7 +53,13 @@ function parseCSV(text) {
         const obj = {};
         headers.forEach((header, index) => {
             let val = values[index] || '';
-            obj[header] = val.replace(/^"|"$/g, '').trim();
+            let cleanedVal = val.replace(/^"|"$/g, '').trim();
+            
+            if (header === 'kategori' && cleanedVal) {
+                cleanedVal = cleanedVal.toLocaleUpperCase('tr-TR');
+            }
+            
+            obj[header] = cleanedVal;
         });
         return obj;
     });
@@ -117,7 +123,7 @@ function render(data, categoryOrder) {
 }
 
 function search(term) {
-    term = term.toLowerCase().trim();
+    term = term.toLocaleLowerCase('tr-TR').trim();
     if (!term) {
         const orderedCats = [];
         menuData.forEach(item => {
@@ -129,9 +135,9 @@ function search(term) {
         return;
     }
     const filtered = menuData.filter(i =>
-        (i.urun_adi && i.urun_adi.toLowerCase().includes(term)) ||
-        (i.kategori && i.kategori.toLowerCase().includes(term)) ||
-        (i.aciklama && i.aciklama.toLowerCase().includes(term))
+        (i.urun_adi && i.urun_adi.toLocaleLowerCase('tr-TR').includes(term)) ||
+        (i.kategori && i.kategori.toLocaleLowerCase('tr-TR').includes(term)) ||
+        (i.aciklama && i.aciklama.toLocaleLowerCase('tr-TR').includes(term))
     );
     
     const orderedCats = [];

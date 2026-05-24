@@ -228,14 +228,14 @@ body {
 }
 
 .layout-premium .item-info {
-    padding: 20px;
+    padding: 20px 24px;
 }
 
 .layout-premium .item-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    align-items: flex-start;
+    margin-bottom: 12px;
 }
 
 .layout-premium .item-name {
@@ -244,12 +244,13 @@ body {
     flex: 1;
     padding-right: 15px;
     color: var(--item-name-color);
-    line-height: 1.2;
+    line-height: 1.4;
 }
 
 .layout-premium .item-price-box {
     text-align: right;
     flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .layout-premium .current-price {
@@ -257,7 +258,7 @@ body {
     font-size: 18px;
     font-weight: 800;
     color: var(--price-color);
-    line-height: 1.2;
+    line-height: 1.4;
 }
 
 .layout-premium .old-price {

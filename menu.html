@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crep's & Kaffee Dijital Menü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/style/menu.css">
+</head>
+
+<body class="light-theme">
+
+    <div class="container layout-premium" id="main-container">
+        <div class="header">
+            <img src="src/logo/creps.jpg" class="logo">
+            <h1>Crep's & Kaffee MENÜ</h1>
+        </div>
+
+        <div class="search-area">
+            <div class="search-box">
+                <i class="fa fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Ürün ara..." onkeyup="search(this.value)">
+            </div>
+        </div>
+
+        <div class="nav-outer">
+            <div class="nav-container">
+                <div class="nav-btn left" id="cL" onclick="scrollNav(-150)"><i class="fa fa-chevron-left"></i></div>
+                <div class="nav-wrapper" id="navWrapper"></div>
+                <div class="nav-btn right" id="cR" onclick="scrollNav(150)"><i class="fa fa-chevron-right"></i></div>
+            </div>
+        </div>
+
+        <div id="menu-container"></div>
+        <div class="footer">POWERED BY <a href="https://nexyond.com" target="_blank" style="color: inherit; text-decoration: none; font-weight: 800;">NEXYOND</a> © 2026</div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+    </button>
+
+    <script src="src/script/menu.js"></script>
+</body>
+
+</html>

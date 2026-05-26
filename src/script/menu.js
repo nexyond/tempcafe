@@ -187,4 +187,23 @@ function observeCategories() {
     document.querySelectorAll('.category-title').forEach(title => observer.observe(title));
 }
 
+// --- POPUP AÇMA / KAPAMA MANTIKLARI ---
+function toggleGalleryModal(show) {
+    const modal = document.getElementById("galleryModal");
+    if(modal) {
+        modal.style.display = show ? "flex" : "none";
+    }
+    // Kullanıcı butona basarsa balonu anında gizle
+    const badge = document.getElementById('gallery-badge');
+    if(badge) badge.style.display = 'none';
+}
+
+// Boşluğa basınca kapatma mantığı
+function closeGalleryOutside(event) {
+    if (event.target.id === "galleryModal") {
+        toggleGalleryModal(false);
+    }
+}
+
+
 init();

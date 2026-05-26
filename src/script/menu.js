@@ -81,6 +81,22 @@ async function init() {
         updateArrows();
         render(menuData, cats);
         observeCategories();
+
+        const loader = document.getElementById('loading-screen');
+        if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 400);
+        }
+
+        const badge = document.getElementById('gallery-badge');
+        if(badge) {
+            badge.style.display = 'block';
+            setTimeout(() => {
+                badge.style.opacity = '0';
+                badge.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => badge.style.display = 'none', 500);
+            }, 3000);
+        }
     } catch (error) {
         console.error("Menü yüklenirken hata oluştu:", error);
     }
@@ -187,23 +203,19 @@ function observeCategories() {
     document.querySelectorAll('.category-title').forEach(title => observer.observe(title));
 }
 
-// --- POPUP AÇMA / KAPAMA MANTIKLARI ---
 function toggleGalleryModal(show) {
     const modal = document.getElementById("galleryModal");
     if(modal) {
         modal.style.display = show ? "flex" : "none";
     }
-    // Kullanıcı butona basarsa balonu anında gizle
     const badge = document.getElementById('gallery-badge');
     if(badge) badge.style.display = 'none';
 }
 
-// Boşluğa basınca kapatma mantığı
 function closeGalleryOutside(event) {
     if (event.target.id === "galleryModal") {
         toggleGalleryModal(false);
     }
 }
-
 
 init();

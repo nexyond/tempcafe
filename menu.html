@@ -11,49 +11,31 @@
 </head>
 
 <body class="light-theme">
-    <!-- 1. YÜKLEME ANIMASYONU (Body başlangıcına ekle) -->
-<div id="loading-screen" class="loading-container">
-    <div class="spinner"></div>
-    <p>Menü Yükleniyor...</p>
-</div>
 
-<!-- 2. SOL ALT GALERİ BUTONU VE KONUŞMA BALONU (Mevcut theme-toggle butonunun yanına/yakınına ekle) -->
-<div class="gallery-wrapper">
-    <div id="gallery-badge" class="gallery-tooltip">Crep görsellerini buradan inceleyebilirsiniz!</div>
-    <button class="gallery-toggle" onclick="toggleGalleryModal(true)">
-        <i class="fa-solid fa-images"></i>
-        <span class="gallery-text">Görsel Menü</span>
-    </button>
-</div>
+    <div id="loading-screen" class="loading-container">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px; font-weight: 600;">Menü Yükleniyor...</p>
+    </div>
 
-<!-- 3. GALERİ POPUP GÖRÜNÜMÜ (Ekran kenarlarından pay bırakan kart düzeni) -->
-<div id="galleryModal" class="gallery-modal" onclick="closeGalleryOutside(event)">
-    <div class="gallery-modal-content">
-        <span class="gallery-modal-close" onclick="toggleGalleryModal(false)">&times;</span>
-        <h3 class="gallery-title">Popüler Ürünlerimiz</h3>
-        
-        <div class="gallery-scroll-area">
-            <!-- Örnek Ürün Kartları (Şimdilik logo görselinle) -->
-            <div class="gallery-card">
-                <img src="src/logo/creps.jpg" alt="Meyveli Crep">
-                <div class="gallery-card-info">Meyveli Crep</div>
-            </div>
-            <div class="gallery-card">
-                <img src="src/logo/creps.jpg" alt="Krep Suşi">
-                <div class="gallery-card-info">Krep Suşi</div>
-            </div>
-            <div class="gallery-card">
-                <img src="src/logo/creps.jpg" alt="Pankek Kulesi">
-                <div class="gallery-card-info">Pankek Kulesi</div>
-            </div>
-            <div class="gallery-card">
-                <img src="src/logo/creps.jpg" alt="Çikolatalı Crep">
-                <div class="gallery-card-info">Çikolatalı Crep</div>
+    <div class="gallery-wrapper">
+        <div id="gallery-badge" class="gallery-tooltip">Crep görsellerini buradan inceleyebilirsiniz!</div>
+        <button class="gallery-toggle" onclick="toggleGalleryModal(true)">
+            <i class="fa-solid fa-images"></i>
+        </button>
+    </div>
+
+    <div id="galleryModal" class="gallery-modal" onclick="closeGalleryOutside(event)">
+        <div class="gallery-modal-content">
+            <span class="gallery-modal-close" onclick="toggleGalleryModal(false)">&times;</span>
+            <h3 class="gallery-title">Ürün Görselleri</h3>
+            <div class="gallery-scroll-area">
+                <div class="gallery-card">
+                    <img src="src/logo/creps.jpg" alt="Çikolatalı Crep">
+                    <div class="gallery-card-info">Çikolatalı Crep</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 
     <div class="container" id="main-container">
         <div class="header">
@@ -81,10 +63,9 @@
     </div>
 
     <button class="theme-toggle" onclick="toggleTheme()">
-        <i id="theme-icon" class="fas fa-moon"></i>
+        <i id="theme-icon" class="fa-solid fa-moon"></i>
     </button>
 
     <script src="src/script/menu.js"></script>
 </body>
-
 </html>

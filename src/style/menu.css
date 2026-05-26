@@ -281,3 +281,181 @@ body.dark-theme {
     opacity: 0.6;
     font-weight: 600;
 }
+
+/* --- YÜKLEME EKRANI STİLLERİ --- */
+.loading-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #f8f5f0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.4s ease;
+}
+body.dark-theme .loading-container {
+    background: #1e1e1e;
+}
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #e0e0e0;
+    border-top: 5px solid var(--orange);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.loading-container p {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+}
+body.dark-theme .loading-container p {
+    color: #fff;
+}
+
+/* --- SOL ALT GELECEK GALERİ BUTONU --- */
+.gallery-wrapper {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.gallery-toggle {
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 24px;
+    background-color: var(--orange);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.gallery-text {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* --- IPUCU BALONU (TOOLTIP) --- */
+.gallery-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    left: 5px;
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    width: 180px;
+    white-space: normal;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    animation: fadeIn 0.3s ease;
+}
+.gallery-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 15px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* --- PAY BIRAKAN POPUP TASARIMI --- */
+.gallery-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+}
+.gallery-modal-content {
+    background: #f8f5f0;
+    width: 88%;
+    max-width: 390px;
+    height: 75%;
+    border-radius: 24px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
+body.dark-theme .gallery-modal-content {
+    background: #252525;
+}
+.gallery-title {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+body.dark-theme .gallery-title {
+    color: #fff;
+}
+.gallery-modal-close {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 28px; font-weight: bold;
+    color: #666; cursor: pointer;
+}
+body.dark-theme .gallery-modal-close {
+    color: #bbb;
+}
+
+/* --- POPUP IÇINDEKİ LISTE VE KARTLAR --- */
+.gallery-scroll-area {
+    overflow-y: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+.gallery-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+body.dark-theme .gallery-card {
+    background: #333;
+}
+.gallery-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+.gallery-card-info {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+body.dark-theme .gallery-card-info {
+    color: #fff;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

@@ -26,11 +26,25 @@ function updateArrows() {
     document.getElementById('cR').style.display = (nw.scrollWidth - nw.clientWidth - nw.scrollLeft) > 10 ? 'flex' : 'none';
 }
 
+function normalizeHeader(str) {
+    return str
+        .toLowerCase()
+        .replace(/ı/g, 'i')
+        .replace(/ğ/g, 'g')
+        .replace(/ü/g, 'u')
+        .replace(/ş/g, 's')
+        .replace(/ö/g, 'o')
+        .replace(/ç/g, 'c')
+        .replace(/[^a-z0-9]/g, '')
+        .trim();
+}
+
 function parseCSV(text) {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line);
     if (!lines.length) return [];
     
-    const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    const rawHeaders = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    const normalizedHeaders = rawHeaders.map(h => normalizeHeader(h));
     
     return lines.slice(1).map(line => {
         let values = [];
@@ -51,15 +65,21 @@ function parseCSV(text) {
         values.push(current.trim());
         
         const obj = {};
-        headers.forEach((header, index) => {
+        normalizedHeaders.forEach((header, index) => {
             let val = values[index] || '';
             let cleanedVal = val.replace(/^"|"$/g, '').trim();
             
-            if (header === 'kategori' && cleanedVal) {
-                cleanedVal = cleanedVal.toLocaleUpperCase('tr-TR');
+            if (header === 'kategori' || header === 'category') {
+                obj['kategori'] = cleanedVal.toLocaleUpperCase('tr-TR');
+            } else if (header === 'urunadi' || header === 'name' || header === 'itemname') {
+                obj['urun_adi'] = cleanedVal;
+            } else if (header === 'fiyat' || header === 'price') {
+                obj['fiyat'] = cleanedVal;
+            } else if (header === 'aciklama' || header === 'description' || header === 'desc') {
+                obj['aciklama'] = cleanedVal;
+            } else {
+                obj[header] = cleanedVal;
             }
-            
-            obj[header] = cleanedVal;
         });
         return obj;
     });
@@ -79,20 +99,19 @@ async function init() {
         const response = await fetch(`https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`);
         
         if (!response.ok) {
-            throw new Error("Google Sheets bağlantısı başarısız oldu.");
+            throw new Error("Tabloya erişilemedi.");
         }
         
         const text = await response.text();
         menuData = parseCSV(text);
 
-        if (!menuData || menuData.length === 0) {
-            throw new Error("Tablodan veri okunamadı veya tablo boş.");
-        }
-
         const cats = [...new Set(menuData.map(i => i.kategori).filter(Boolean))];
         const nav = document.getElementById('navWrapper');
-        nav.innerHTML = cats.map(c => `<div class="cat-link" onclick="scrollToCategory('${c}', this)">${c}</div>`).join('');
-        nav.addEventListener('scroll', updateArrows);
+        
+        if(nav) {
+            nav.innerHTML = cats.map(c => `<div class="cat-link" onclick="scrollToCategory('${c}', this)">${c}</div>`).join('');
+            nav.addEventListener('scroll', updateArrows);
+        }
 
         window.addEventListener('resize', updateArrows);
         updateArrows();
@@ -108,13 +127,14 @@ async function init() {
             }, 3000);
         }
     } catch (error) {
-        console.error("Menü yüklenirken hata oluştu:", error);
+        console.error("Hata:", error);
         const container = document.getElementById('menu-container');
         if (container) {
-            container.innerHTML = `<div class="no-results" style="color: red; padding: 20px;">
-                Menü verileri yüklenemedi.<br>
-                Lütfen Google Sheets dökümanınızın paylaşıma açık olduğundan emin olun.
-            </div>`;
+            container.innerHTML = `
+                <div class="no-results" style="color: #333; padding: 20px; text-align:center;">
+                    <p>Menü verileri şu an yüklenemiyor.</p>
+                    <small>Lütfen Google Etablonuzun sağ üstteki "Paylaş" kısmından "Bağlantıya sahip olan herkes görüntüleyebilir" yapıldığından emin olun.</small>
+                </div>`;
         }
     } finally {
         removeLoadingScreen();
@@ -123,6 +143,8 @@ async function init() {
 
 function render(data, categoryOrder) {
     const container = document.getElementById('menu-container');
+    if (!container) return;
+    
     if (!data.length) {
         container.innerHTML = '<div class="no-results">Ürün bulunamadı.</div>';
         return;
@@ -238,4 +260,3 @@ function closeGalleryOutside(event) {
 }
 
 init();
-
